@@ -12,7 +12,7 @@ use App\Service\EtudiantService;
 
 class AppController
 {
-    private $filiereService;  // FiliereService
+    private $filiereService;  // filiere
     private $etudiantService; // EtudiantService
 
     public function __construct(FiliereService $filiereService, EtudiantService $etudiantService)
@@ -21,7 +21,7 @@ class AppController
         $this->etudiantService = $etudiantService;
     }
 
-    /** @param array $request ex: ['action'=>'create_filiere', 'code'=>'INFO','libelle'=>'Informatique'] */
+    /** @param array $request ex: ['teeeeeeeest*/
     public function handle(array $request): Response
     {
         try {
@@ -51,7 +51,7 @@ class AppController
                         (string)$request['prenom'],
                         (string)$request['email'],
                         (int)$request['filiere_id']
-                    );
+                    );//plag
                     $ok = $this->etudiantService->update($dto);
                     return new Response(true, ['updated' => $ok]);
                 case 'create_filiere_then_student':
@@ -63,7 +63,7 @@ class AppController
                     return new Response(true, $ids);
                 default:
                     return new Response(false, null, 'action inconnue');
-            }
+            }//test
         } catch (BusinessException $bx) {
             return new Response(false, null, 'business_error: ' . $bx->getMessage());
         } catch (\PDOException $px) {
