@@ -13,10 +13,10 @@ use PDO;
 
 class FiliereService
 {
-    private $filiereDao;   // FiliereDao
-    private $etudiantDao;  // EtudiantDao
-    private $pdo;          // PDO
-    private $logger;       // Logger
+    private $filiereDao;  
+    private $etudiantDao;  
+    private $pdo;          
+    private $logger;       
 
     public function __construct(FiliereDao $filiereDao, EtudiantDao $etudiantDao, PDO $pdo, Logger $logger)
     {
@@ -37,7 +37,7 @@ class FiliereService
             throw new BusinessException('Filiere.code ne doit pas dépasser 16 caractères');
         }
         $code = strtoupper($code);
-        // Entity créée dans le Service (pas dans le Controller)
+       
         $entity = new Filiere(null, $code, $lib);
         return $this->filiereDao->insert($entity);
     }
@@ -45,7 +45,7 @@ class FiliereService
     public function deleteFiliere(int $id): bool
     {
         if ($id <= 0) { throw new BusinessException('id filière invalide'); }
-        // Règle métier: interdiction de supprimer si des étudiants existent
+       
         $count = $this->etudiantDao->countByFiliereId($id);
         if ($count > 0) {
             throw new BusinessException('Suppression filière interdite: des étudiants y sont rattachés');
