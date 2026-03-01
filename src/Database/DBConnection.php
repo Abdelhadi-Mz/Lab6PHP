@@ -7,9 +7,9 @@ use PDO; use PDOException; use App\Log\Logger;
 
 class DBConnection
 {
-    /** @var PDO|null */
+    
     private static $pdo = null;
-    /** @var Logger */
+   
     private static $logger;
 
     public static function init(Logger $logger): void
@@ -29,14 +29,14 @@ class DBConnection
         $opts = $config['options'] ?? [];
         try {
             self::$pdo = new PDO($dsn, $user, $pass, $opts);
-            // S’assurer du bon encodage au cas où
+            // to test
             self::$pdo->exec('SET NAMES utf8mb4');
             return self::$pdo;
         } catch (PDOException $e) {
             if (self::$logger) {
                 self::$logger->error('PDO connection failed', ['method' => __METHOD__, 'dsn' => $dsn, 'error' => $e->getMessage()]);
             }
-            throw $e; // laisser remonter après log
+            throw $e; // after log
         }
     }
 }
