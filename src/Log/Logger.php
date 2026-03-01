@@ -5,7 +5,7 @@ namespace App\Log;
 
 class Logger
 {
-    /** @var string */
+    
     private $filePath;
 
     public function __construct(string $filePath)
@@ -15,7 +15,7 @@ class Logger
         if (!is_dir($dir)) { @mkdir($dir, 0777, true); }
         if (!file_exists($filePath)) { @touch($filePath); }
     }
-
+// for
     public function error(string $message, array $context = []): void
     {
         $date = (new \DateTimeImmutable())->format('Y-m-d H:i:s');
