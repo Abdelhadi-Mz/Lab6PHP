@@ -5,13 +5,13 @@ namespace App\Entity;
 
 class Etudiant
 {
-    private $id;        // int|null (auto)
-    private $cne;       // string unique
-    private $nom;       // string
-    private $prenom;    // string
-    private $email;     // string unique
-    private $filiereId; // int FK -> filiere.id
-
+    private $id;        
+    private $cne;       
+    private $nom;       
+    private $prenom;    
+    private $email;    
+    private $filiereId; 
+// constructor
     public function __construct(?int $id, string $cne, string $nom, string $prenom, string $email, int $filiereId)
     {
         $this->id = $id;
@@ -48,7 +48,7 @@ class Etudiant
         if ($prenom === '') { throw new \InvalidArgumentException('prenom requis'); }
         $this->prenom = $prenom;
     }
-
+//no plag
     public function getEmail(): string { return $this->email; }
     public function setEmail(string $email): void
     {
@@ -58,7 +58,7 @@ class Etudiant
         }
         $this->email = $email;
     }
-
+//test
     public function getFiliereId(): int { return $this->filiereId; }
     public function setFiliereId(int $filiereId): void
     {
