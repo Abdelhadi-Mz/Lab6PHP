@@ -14,12 +14,12 @@ use PDO;
 
 class EtudiantService
 {
-    private $etudiantDao; // EtudiantDao
-    private $filiereDao;  // FiliereDao
-    private $pdo;         // PDO
-    private $logger;      // Logger
+    private $etudiantDao; 
+    private $filiereDao;  
+    private $pdo;        
+    private $logger;     
 
-    /** @var string[] */
+    
     private $forbiddenEmailDomains = ['mailinator.com', 'temp-mail.org'];
 
     public function __construct(EtudiantDao $etudiantDao, FiliereDao $filiereDao, PDO $pdo, Logger $logger)
@@ -52,16 +52,16 @@ class EtudiantService
     {
         if ($dto->getId() <= 0) { throw new BusinessException('id étudiant invalide'); }
         $this->validateEmail($dto->getEmail());
-        $this->validateCne($dto->getNom() === '' ? 'CNE0000' : 'CNE0000'); // non utilisé ici; cne n'est pas modifié
+        $this->validateCne($dto->getNom() === '' ? 'CNE0000' : 'CNE0000'); 
         if ($this->filiereDao->findById($dto->getFiliereId()) === null) {
             throw new BusinessException('filiere_id inexistant');
         }
         $found = $this->etudiantDao->findById($dto->getId());
         if ($found === null) { throw new BusinessException('Etudiant introuvable'); }
-        // Recréer pour simplicité (ou mettre à jour les champs sur l’entité existante)
+        
         $entity = new Etudiant(
             $dto->getId(),
-            $found->getCne(), // cne inchangé
+            $found->getCne(),
             $dto->getNom(),
             $dto->getPrenom(),
             $dto->getEmail(),
@@ -70,7 +70,7 @@ class EtudiantService
         return $this->etudiantDao->update($entity);
     }
 
-    /** Cas d’usage transactionnel: créer une filière puis un étudiant rattaché. */
+  
     public function createFiliereThenStudentTransaction(
         \App\Dto\FiliereCreateDTO $fDto,
         \App\Dto\EtudiantCreateDTO $eDto
@@ -79,7 +79,7 @@ class EtudiantService
         try {
             $fid = (new \App\Service\FiliereService($this->filiereDao, $this->etudiantDao, $this->pdo, $this->logger))
                 ->createFiliere($fDto);
-            // forcer etudiant à pointer la filière créée
+           
             $eDtoFixed = new \App\Dto\EtudiantCreateDTO(
                 $eDto->getCne(),
                 $eDto->getNom(),
@@ -95,7 +95,7 @@ class EtudiantService
             if ($ex instanceof \PDOException) {
                 $this->logger->error('Transaction failed: ' . $ex->getMessage(), ['method' => __METHOD__]);
             }
-            // Propager en BusinessException si besoin
+            
             if (!($ex instanceof BusinessException)) {
                 throw new BusinessException('Echec transactionnel: ' . $ex->getMessage());
             }
